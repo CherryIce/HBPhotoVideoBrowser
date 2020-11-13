@@ -9,6 +9,8 @@
 
 @implementation HBHelper
 
+/**
+ */
 + (UIImage *) snapshotView:(UIView *) view {
     UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, [UIScreen mainScreen].scale);
     [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:NO];
@@ -17,6 +19,8 @@
     return image;
 }
 
+/**
+ */
 + (CGSize) scaleAspectFitImageViewWithImage:(UIImage *) image {
     CGSize  imageSize = image.size;
 

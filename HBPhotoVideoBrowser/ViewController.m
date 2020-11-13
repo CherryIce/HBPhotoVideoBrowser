@@ -36,9 +36,9 @@
     
 //    HBDataItem * item = [[HBDataItem alloc] initWithImage:[UIImage imageNamed:@"strawberry"]];
 //    [self.dataArray addObject:item];
-//
-//    HBDataItem * item1 = [[HBDataItem alloc] initWithURL:[NSURL URLWithString:@"https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff00000bdkpfpdd2r6fb5kf6m50&line=0.mp4"] dataType:HBDataTypeVIDEO];
-//    [self.dataArray addObject:item1];
+
+    HBDataItem * item1 = [[HBDataItem alloc] initWithURL:[NSURL URLWithString:@"https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff00000bdkpfpdd2r6fb5kf6m50&line=0.mp4"] dataType:HBDataTypeVIDEO];
+    [self.dataArray addObject:item1];
     
     NSArray * bdstr = @[
         @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599113659804&di=36f802a0bc214ced844aa1cf5a6d3cfd&imgtype=0&src=http%3A%2F%2Fimg.ewebweb.com%2Fuploads%2F20190909%2F21%2F1568034829-UwYfWBSKcC.png",

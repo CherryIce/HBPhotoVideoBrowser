@@ -143,7 +143,6 @@
                 [UIView animateWithDuration:0.25 animations:^{
                     self.superview.superview.backgroundColor = [UIColor blackColor];
                     self.imageScrollView.imageView.frame = self.startFrame;
-//                    [self layoutSubviews];
                 }];
                 
                 if (self.delegate && [self.delegate respondsToSelector:@selector(gestureToolsViewShouldHide:)]) {
@@ -187,6 +186,9 @@
 #pragma mark - data
 - (void)setData:(HBDataItem *)data atItem:(NSInteger)item{
     [super setData:data atItem:item];
+    /**
+     优先级： 大图链接 >  小图链接 > image
+     */
     if (self.dataItem.dataType == HBDataTypeIMAGE) {
         //判断加载方式
         NSURL * url ;

@@ -22,7 +22,7 @@
         _loadingLayer.frame = rect;
         _loadingLayer.position = CGPointMake(self.frame.size.width/2,self.frame.size.height/2);
         _loadingLayer.fillColor = UIColor.clearColor.CGColor;
-        _loadingLayer.lineWidth = 4;
+        _loadingLayer.lineWidth = 2.5f;
         _loadingLayer.strokeColor = UIColor.whiteColor.CGColor;
         UIBezierPath * bezier = [UIBezierPath bezierPathWithOvalInRect:rect];
         _loadingLayer.path = bezier.CGPath;

@@ -24,6 +24,16 @@
 		46808B6E25304444005EF5AA /* HBBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46808B6D25304444005EF5AA /* HBBaseCollectionViewCell.m */; };
 		46808B772530466D005EF5AA /* HBVideoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46808B762530466D005EF5AA /* HBVideoCollectionViewCell.m */; };
 		46808B7D2530468A005EF5AA /* HBImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46808B7C2530468A005EF5AA /* HBImageCollectionViewCell.m */; };
+		46E8F322255E7D2C00BC021F /* HBMediaPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E8F316255E7D2C00BC021F /* HBMediaPlayerView.m */; };
+		46E8F323255E7D2C00BC021F /* HBPlayerToolsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E8F318255E7D2C00BC021F /* HBPlayerToolsView.m */; };
+		46E8F324255E7D2C00BC021F /* pause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F31A255E7D2C00BC021F /* pause@2x.png */; };
+		46E8F325255E7D2C00BC021F /* play@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F31B255E7D2C00BC021F /* play@3x.png */; };
+		46E8F326255E7D2C00BC021F /* meidaPlay@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F31C255E7D2C00BC021F /* meidaPlay@2x.png */; };
+		46E8F327255E7D2C00BC021F /* meidaPlay@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F31D255E7D2C00BC021F /* meidaPlay@3x.png */; };
+		46E8F328255E7D2C00BC021F /* play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F31E255E7D2C00BC021F /* play@2x.png */; };
+		46E8F329255E7D2C00BC021F /* pause@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F31F255E7D2C00BC021F /* pause@3x.png */; };
+		46E8F32A255E7D2C00BC021F /* point@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F320255E7D2C00BC021F /* point@2x.png */; };
+		46E8F32B255E7D2C00BC021F /* point@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F321255E7D2C00BC021F /* point@3x.png */; };
 		5515E3BA252C8D6500F173CD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5515E3B9252C8D6500F173CD /* AppDelegate.m */; };
 		5515E3C0252C8D6500F173CD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5515E3BF252C8D6500F173CD /* ViewController.m */; };
 		5515E3C3252C8D6500F173CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5515E3C1252C8D6500F173CD /* Main.storyboard */; };
@@ -92,6 +102,18 @@
 		46808B762530466D005EF5AA /* HBVideoCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HBVideoCollectionViewCell.m; sourceTree = "<group>"; };
 		46808B7B2530468A005EF5AA /* HBImageCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HBImageCollectionViewCell.h; sourceTree = "<group>"; };
 		46808B7C2530468A005EF5AA /* HBImageCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HBImageCollectionViewCell.m; sourceTree = "<group>"; };
+		46E8F315255E7D2C00BC021F /* HBPlayerToolsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBPlayerToolsView.h; sourceTree = "<group>"; };
+		46E8F316255E7D2C00BC021F /* HBMediaPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBMediaPlayerView.m; sourceTree = "<group>"; };
+		46E8F317255E7D2C00BC021F /* HBMediaPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HBMediaPlayerView.h; sourceTree = "<group>"; };
+		46E8F318255E7D2C00BC021F /* HBPlayerToolsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HBPlayerToolsView.m; sourceTree = "<group>"; };
+		46E8F31A255E7D2C00BC021F /* pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause@2x.png"; sourceTree = "<group>"; };
+		46E8F31B255E7D2C00BC021F /* play@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@3x.png"; sourceTree = "<group>"; };
+		46E8F31C255E7D2C00BC021F /* meidaPlay@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meidaPlay@2x.png"; sourceTree = "<group>"; };
+		46E8F31D255E7D2C00BC021F /* meidaPlay@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "meidaPlay@3x.png"; sourceTree = "<group>"; };
+		46E8F31E255E7D2C00BC021F /* play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "play@2x.png"; sourceTree = "<group>"; };
+		46E8F31F255E7D2C00BC021F /* pause@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause@3x.png"; sourceTree = "<group>"; };
+		46E8F320255E7D2C00BC021F /* point@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point@2x.png"; sourceTree = "<group>"; };
+		46E8F321255E7D2C00BC021F /* point@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point@3x.png"; sourceTree = "<group>"; };
 		5515E3B5252C8D6500F173CD /* HBPhotoVideoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HBPhotoVideoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5515E3B8252C8D6500F173CD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5515E3B9252C8D6500F173CD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -234,6 +256,7 @@
 		46808B63253041A6005EF5AA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				46E8F314255E7D2C00BC021F /* HBMediaPlayer */,
 				46724B9B2537033900A7C6EC /* CollectionView */,
 				46724B912536FC3700A7C6EC /* LoadView */,
 				46808B6B25304419005EF5AA /* BaseViews */,
@@ -300,6 +323,33 @@
 				46808B6D25304444005EF5AA /* HBBaseCollectionViewCell.m */,
 			);
 			path = BaseViews;
+			sourceTree = "<group>";
+		};
+		46E8F314255E7D2C00BC021F /* HBMediaPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				46E8F315255E7D2C00BC021F /* HBPlayerToolsView.h */,
+				46E8F318255E7D2C00BC021F /* HBPlayerToolsView.m */,
+				46E8F317255E7D2C00BC021F /* HBMediaPlayerView.h */,
+				46E8F316255E7D2C00BC021F /* HBMediaPlayerView.m */,
+				46E8F319255E7D2C00BC021F /* Resource */,
+			);
+			path = HBMediaPlayer;
+			sourceTree = "<group>";
+		};
+		46E8F319255E7D2C00BC021F /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				46E8F31A255E7D2C00BC021F /* pause@2x.png */,
+				46E8F31B255E7D2C00BC021F /* play@3x.png */,
+				46E8F31C255E7D2C00BC021F /* meidaPlay@2x.png */,
+				46E8F31D255E7D2C00BC021F /* meidaPlay@3x.png */,
+				46E8F31E255E7D2C00BC021F /* play@2x.png */,
+				46E8F31F255E7D2C00BC021F /* pause@3x.png */,
+				46E8F320255E7D2C00BC021F /* point@2x.png */,
+				46E8F321255E7D2C00BC021F /* point@3x.png */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 		53C144DB5D42E94E5E085340 /* Pods */ = {
@@ -474,9 +524,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46E8F327255E7D2C00BC021F /* meidaPlay@3x.png in Resources */,
 				5515E3C8252C8D6600F173CD /* LaunchScreen.storyboard in Resources */,
 				5515E3C5252C8D6600F173CD /* Assets.xcassets in Resources */,
+				46E8F32A255E7D2C00BC021F /* point@2x.png in Resources */,
 				5515E3C3252C8D6500F173CD /* Main.storyboard in Resources */,
+				46E8F329255E7D2C00BC021F /* pause@3x.png in Resources */,
+				46E8F326255E7D2C00BC021F /* meidaPlay@2x.png in Resources */,
+				46E8F325255E7D2C00BC021F /* play@3x.png in Resources */,
+				46E8F328255E7D2C00BC021F /* play@2x.png in Resources */,
+				46E8F324255E7D2C00BC021F /* pause@2x.png in Resources */,
+				46E8F32B255E7D2C00BC021F /* point@3x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -552,9 +610,11 @@
 				46724AEC2533EB1300A7C6EC /* HBDataItem.m in Sources */,
 				46724B942536FC5800A7C6EC /* HBLoadView.m in Sources */,
 				5515E3C0252C8D6500F173CD /* ViewController.m in Sources */,
+				46E8F323255E7D2C00BC021F /* HBPlayerToolsView.m in Sources */,
 				46724B482536DAE500A7C6EC /* HBPresentTransition.m in Sources */,
 				5515E3BA252C8D6500F173CD /* AppDelegate.m in Sources */,
 				5515E3CB252C8D6600F173CD /* main.m in Sources */,
+				46E8F322255E7D2C00BC021F /* HBMediaPlayerView.m in Sources */,
 				46724B132534550500A7C6EC /* HBBrowserDataSource.m in Sources */,
 				46724B572536DB1200A7C6EC /* HBDismissTransition.m in Sources */,
 				46808B6E25304444005EF5AA /* HBBaseCollectionViewCell.m in Sources */,

@@ -19,8 +19,12 @@ typedef NS_ENUM(NSUInteger, ImageType) {
 
 @interface HBHelper : NSObject
 
+/**
+ */
 + (UIImage *) snapshotView:(UIView *) view ;
 
+/**
+ */
 + (CGSize) scaleAspectFitImageViewWithImage:(UIImage *) image;
 
 @end
