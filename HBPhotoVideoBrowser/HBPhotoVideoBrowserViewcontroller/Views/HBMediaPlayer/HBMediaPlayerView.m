@@ -31,6 +31,8 @@ static NSInteger  const MediaURLInvalidCode =  404;
 
 @property (nonatomic, strong) AVPlayerItemVideoOutput * videoOutPut;
 
+@property (nonatomic, assign) BOOL isDraging;
+
 @end
 
 @implementation HBMediaPlayerView
@@ -72,6 +74,7 @@ static NSInteger  const MediaURLInvalidCode =  404;
     _isNeedAutoPlay = isNeedAutoPlay;
 }
 
+#pragma mark - readonly
 - (UIImage *)currPlayerImage {
     CMTime itemTime = self.player.currentItem.currentTime;
     CVPixelBufferRef pixelBuffer = [_videoOutPut copyPixelBufferForItemTime:itemTime itemTimeForDisplay:nil];
@@ -151,6 +154,11 @@ static NSInteger  const MediaURLInvalidCode =  404;
             [self.playerToolsView show];
         }
     }
+}
+
+- (void) transfromAniLayout:(CGRect) frame drag:(BOOL)drag {
+    _isDraging = drag;
+    self.playerLayer.frame = frame;
 }
 
 #pragma mark - HBPlayerToolsDelegate
@@ -285,11 +293,16 @@ static NSInteger  const MediaURLInvalidCode =  404;
 - (void)layoutSubviews {
     [super layoutSubviews];
     
+    //拖拽情况 不去布局
+    if (_isDraging) {
+        return;
+    }
+    
     self.playerLayer.frame = self.bounds;
     self.playButton.frame = CGRectMake(0, 0, 50, 50);
     self.playButton.center = CGPointMake(self.bounds.size.width * 0.5, self.bounds.size.height * 0.5);
     
-    NSInteger safeBottom = 10;
+    NSInteger safeBottom = 20;
     if (@available(iOS 11.0, *)) {
         safeBottom = self.safeAreaInsets.bottom;
     }

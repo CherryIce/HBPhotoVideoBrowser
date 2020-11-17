@@ -66,6 +66,9 @@
 }
 
 - (void) pan:(UIPanGestureRecognizer *) gesture {
+    if (self.playerView.playerStatus == HBMediaPlayerBuffer) {
+        return;
+    }
     CGPoint point       = CGPointZero;
     CGPoint location    = CGPointZero;
     CGPoint velocity    = CGPointZero;
@@ -81,14 +84,12 @@
                 [self.delegate gestureToolsViewShouldHide:YES];
             }
             [self.playerView changPlayerToolsStatus:YES];
-            
-            self.transtionImgV.image = self.playerView.currPlayerImage;
-            self.playerView.hidden = YES;
-            self.transtionImgV.hidden = NO;
         }
             break;
         case UIGestureRecognizerStateChanged:{
             //NSLog(@"changed");
+            if (_startFrame.size.width == 0 || _startFrame.size.height == 0) _startFrame = self.playerView.frame;
+            
             double percent = 1 - fabs(point.y) / self.frame.size.height;
             double s = MAX(percent, 0.3);
             
@@ -101,22 +102,14 @@
             CGFloat rateY = (self.startLocation.y - self.startFrame.origin.y) / self.startFrame.size.height;
             CGFloat y = location.y - height * rateY;
             
-//            self.playerView.playerLayer.frame = CGRectMake(x, y, width, height);
-//            self.transtionImgV.frame = CGRectMake(x+(width/2 - self.transtionImgV.frame.size.width * s/2),
-//                                                  y+(height/2 - self.transtionImgV.frame.size.height * s/2),
-//                                                  self.transtionImgV.frame.size.width * s,
-//                                                  self.transtionImgV.frame.size.height * s);
             self.transtionImgV.frame = CGRectMake(x, y, width, height);
-            
-
+            [self.playerView transfromAniLayout:self.transtionImgV.frame drag:YES];
             self.superview.superview.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:percent];
         }
             break;
         case UIGestureRecognizerStateCancelled:
         case UIGestureRecognizerStateEnded:{
             //NSLog(@"cancel or end");
-            self.playerView.hidden = NO;
-            self.transtionImgV.hidden = YES;
             if(fabs(point.y) > 200 || fabs(velocity.y) > 600){
                 // dismiss
                 _startFrame = self.transtionImgV.frame;
@@ -126,7 +119,8 @@
                 [self.playerView changPlayerToolsStatus:NO];
                 [UIView animateWithDuration:0.25 animations:^{
                     self.superview.superview.backgroundColor = [UIColor blackColor];
-//                    self.playerView.playerLayer.frame = self.playerView.bounds;
+                    self.transtionImgV.frame = self.bounds;
+                    [self.playerView transfromAniLayout:self.transtionImgV.frame drag:YES];
                 }];
                 if (self.delegate && [self.delegate respondsToSelector:@selector(gestureToolsViewShouldHide:)]) {
                     [self.delegate gestureToolsViewShouldHide:NO];
@@ -136,14 +130,10 @@
             break;
         case UIGestureRecognizerStateFailed:{
             NSLog(@"failed");
-            self.playerView.hidden = NO;
-            self.transtionImgV.hidden = YES;
         }
             break;
         default:{
             NSLog(@"other");
-            self.playerView.hidden = NO;
-            self.transtionImgV.hidden = YES;
         }
             break;
     }
@@ -203,7 +193,7 @@
         [self.loading showInView:self.contentView];
     }else{
         [self.loading dismiss];
-        [UIView animateWithDuration:1.f animations:^{
+        [UIView animateWithDuration:0.1f animations:^{
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
             self.transtionImgV.hidden = YES;
         }];
@@ -227,7 +217,8 @@
 
 - (UIImageView *)transtionImgV {
     if (!_transtionImgV) {
-        _transtionImgV = [[UIImageView alloc] initWithFrame:[self.contentView convertRect:self.dataItem.translationView.frame fromView:self.dataItem.translationView.superview]];
+        _transtionImgV = [[UIImageView alloc] initWithFrame:self.bounds];
+        _transtionImgV.contentMode = UIViewContentModeScaleAspectFit;
         if ([self.dataItem.translationView isKindOfClass:[UIImageView class]]) {
             UIImageView * imageV = (UIImageView *)self.dataItem.translationView;
             _transtionImgV.image = imageV.image;
@@ -236,9 +227,6 @@
                _transtionImgV.image = [HBHelper snapshotView:self.dataItem.translationView];
             }
         }
-        CGSize dismissSize = [HBHelper scaleAspectFitImageViewWithImage:_transtionImgV.image];
-        CGRect frame = CGRectMake(CGRectGetWidth(self.contentView.frame)/2 - dismissSize.width/2, CGRectGetHeight(self.contentView.frame)/2 - dismissSize.height/2, dismissSize.width, dismissSize.height);
-        _transtionImgV.frame = frame;
         [self.contentView addSubview:_transtionImgV];
     }
     return _transtionImgV;

@@ -16,6 +16,8 @@ typedef NS_ENUM(NSUInteger, HBMediaPlayerStatus) {
     HBMediaPlayerPause,//已暂停
 };
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol HBMediaPlayerDelegate <NSObject>
 
 @optional
@@ -25,8 +27,6 @@ typedef NS_ENUM(NSUInteger, HBMediaPlayerStatus) {
 - (void) calculateBufferProgress:(CGFloat)progress;
 
 @end
-
-NS_ASSUME_NONNULL_BEGIN
 
 @interface HBMediaPlayerView : UIView
 
@@ -52,6 +52,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 //player tools show and hide
 - (void) changPlayerToolsStatus:(BOOL)hide;
+
+// animation frame and drag
+- (void) transfromAniLayout:(CGRect) frame drag:(BOOL)drag;
 
 @end
 
