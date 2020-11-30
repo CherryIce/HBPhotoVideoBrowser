@@ -105,9 +105,6 @@
 }
 
 /*
- 重置状态
- videocell: close play
- imagecell: reset scale
  */
 - (void)collectionView:(UICollectionView *)collectionView
   didEndDisplayingCell:(UICollectionViewCell *)cell

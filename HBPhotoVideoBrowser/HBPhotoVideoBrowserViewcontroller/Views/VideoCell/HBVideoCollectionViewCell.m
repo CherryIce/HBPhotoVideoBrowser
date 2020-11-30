@@ -38,6 +38,12 @@
 - (void) resetUI {
     [super resetUI];
     [self.playerView pause];
+    [self.playerView changPlayerToolsStatus:NO];
+}
+
+- (void)updateUI {
+    [super updateUI];
+    //code...
 }
 
 #pragma mark - Gestures
@@ -63,6 +69,9 @@
 #pragma mark - gesture
 - (void) tapClick:(UIGestureRecognizer *) gesture {
     [self.playerView changPlayerToolsStatus:NO];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(gestureToolsViewShouldHide:)]) {
+        [self.delegate gestureToolsViewShouldHide:NO];
+    }
 }
 
 - (void) pan:(UIPanGestureRecognizer *) gesture {
@@ -78,17 +87,12 @@
     switch (gesture.state) {
         case UIGestureRecognizerStateBegan:{
             //NSLog(@"start");
-            _startLocation  = location;
-            _startFrame     = self.playerView.frame;
-            if (self.delegate && [self.delegate respondsToSelector:@selector(gestureToolsViewShouldHide:)]) {
-                [self.delegate gestureToolsViewShouldHide:YES];
-            }
-            [self.playerView changPlayerToolsStatus:YES];
+            [self panStartWithLocation:location];
         }
             break;
         case UIGestureRecognizerStateChanged:{
             //NSLog(@"changed");
-            if (_startFrame.size.width == 0 || _startFrame.size.height == 0) _startFrame = self.playerView.frame;
+            if (_startFrame.size.width == 0 || _startFrame.size.height == 0) [self panStartWithLocation:location];
             
             double percent = 1 - fabs(point.y) / self.frame.size.height;
             double s = MAX(percent, 0.3);
@@ -137,6 +141,16 @@
         }
             break;
     }
+}
+
+//拖拽开始
+- (void) panStartWithLocation:(CGPoint)location {
+    _startLocation  = location;
+    _startFrame     = self.playerView.frame;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(gestureToolsViewShouldHide:)]) {
+        [self.delegate gestureToolsViewShouldHide:YES];
+    }
+    [self.playerView changPlayerToolsStatus:YES];
 }
 
 //长按

@@ -58,6 +58,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,readonly) UIImage *smallImage;
 
 /**
+ 原图大小 - 有原图需传
+*/
+@property (nonatomic,assign) long long orignalSize;
+
+/**
  预留扩展属性
 */
 @property (nonatomic , strong) id extraData;

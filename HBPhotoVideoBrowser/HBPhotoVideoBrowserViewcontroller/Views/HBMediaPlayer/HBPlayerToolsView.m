@@ -41,7 +41,7 @@ static CGFloat SHOW_TIME = 3.f;
     self = [super initWithFrame:frame];
     if (self) {
         self.userInteractionEnabled = YES;
-        self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
+//        self.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
         [self createUI];
         [self addSliderEvent];
     }

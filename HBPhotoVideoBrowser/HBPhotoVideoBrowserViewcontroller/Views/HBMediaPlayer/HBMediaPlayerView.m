@@ -8,6 +8,7 @@
 #import "HBMediaPlayerView.h"
 #import <AVKit/AVKit.h>
 #import "HBPlayerToolsView.h"
+#import "HBHelper.h"
 
 static NSString * const MediaErrorDomain    =  @"HBMediaPlayerError";
 static NSString * const MediaURLFailed      =  @"loading media url failed";
@@ -110,7 +111,7 @@ static NSInteger  const MediaURLInvalidCode =  404;
             break;
         case HBMediaPlayerPlaying:
         default:
-            NSLog(@"what are you doing?");
+//            NSLog(@"what are you doing?");
             break;
     }
     if (self.playerToolsView.hidden) {
@@ -135,7 +136,7 @@ static NSInteger  const MediaURLInvalidCode =  404;
             break;
         case HBMediaPlayerPause:
         default:
-            NSLog(@"what are you doing?");
+//            NSLog(@"what are you doing?");
             break;
     }
     if (self.playerToolsView.hidden) {
@@ -149,9 +150,13 @@ static NSInteger  const MediaURLInvalidCode =  404;
         if (!self.playerToolsView.hidden) {
             [self.playerToolsView dismiss];
         }
+        self.playButton.hidden = YES;
     } else {
         if (self.playerToolsView.hidden) {
             [self.playerToolsView show];
+        }
+        if (self.playerStatus != HBMediaPlayerPlaying) {
+            self.playButton.hidden = NO;
         }
     }
 }
@@ -302,11 +307,13 @@ static NSInteger  const MediaURLInvalidCode =  404;
     self.playButton.frame = CGRectMake(0, 0, 50, 50);
     self.playButton.center = CGPointMake(self.bounds.size.width * 0.5, self.bounds.size.height * 0.5);
     
-    NSInteger safeBottom = 20;
+    CGFloat left = 16;
+    CGFloat bottom = 0;
     if (@available(iOS 11.0, *)) {
-        safeBottom = self.safeAreaInsets.bottom;
+        left += self.safeAreaInsets.left;
+        bottom = self.safeAreaInsets.bottom;
     }
-    self.playerToolsView.frame = CGRectMake(16, CGRectGetHeight(self.frame) - safeBottom - 40, CGRectGetWidth(self.frame) - 32, 40);
+    self.playerToolsView.frame = CGRectMake(left, CGRectGetHeight(self.frame) - bottom - [HBHelper hbSafeBottom] - [HBHelper hbToolsHeight] * 2, CGRectGetWidth(self.frame) - 2*left, [HBHelper hbToolsHeight]);
 }
 
 #pragma mark - getter

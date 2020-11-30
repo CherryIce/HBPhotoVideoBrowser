@@ -6,15 +6,20 @@
 //
 
 #import "HBPhotoVideoBrowserViewController.h"
-
+#import "HBHelper.h"
 #import "HBCollectionView.h"
 #import "HBBrowserDataSource.h"
 
-@interface HBPhotoVideoBrowserViewController ()<HBBrowserDataSourceDelegate>
+@interface HBPhotoVideoBrowserViewController ()<HBBrowserDataSourceDelegate,HBToolsViewDelegate>
 
-@property (nonatomic , strong) HBCollectionView * cv;
+//卡片视图
+@property (nonatomic , strong) HBCollectionView * collectView;
 
+//数据代理操作
 @property (nonatomic , strong) HBBrowserDataSource * dataSource;
+
+//当前是否禁止操作
+@property (nonatomic , assign) BOOL isForbiddenHandle;
 
 @end
 
@@ -24,6 +29,7 @@
     self = [super init];
     if (self) {
         _isAllowLpGesture = NO;
+        _isForbiddenHandle = NO;
     }
     return self;
 }
@@ -32,6 +38,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor blackColor];
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    //横竖屏切换监听
+    [self addObservers];
 }
 
 /**
@@ -43,37 +52,75 @@
     }
     NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:_currentIndex inSection:0];
     if (@available(iOS 14.0, *)) {
-        UICollectionViewLayoutAttributes * attributes = [self.cv layoutAttributesForItemAtIndexPath:scrollIndexPath];
-        [self.cv setContentOffset:CGPointMake(attributes.frame.origin.x, attributes.frame.origin.y) animated:NO];
+        UICollectionViewLayoutAttributes * attributes = [self.collectView layoutAttributesForItemAtIndexPath:scrollIndexPath];
+        [self.collectView setContentOffset:CGPointMake(attributes.frame.origin.x, attributes.frame.origin.y) animated:NO];
     }else{
-        [self.cv scrollToItemAtIndexPath:scrollIndexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+        [self.collectView scrollToItemAtIndexPath:scrollIndexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
     }
     [UIView animateWithDuration:0.25 animations:^{
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        self.cv.hidden = NO;//显示动画所需
+        self.collectView.hidden = NO;//显示动画所需
+    }];
+    [self updateToolsSize];
+}
+
+#pragma mark - observer
+- (void) addObservers {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidChangedStatusBarOrientationNotification:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillChangedStatusBarOrientationNotification:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
+}
+
+- (void)applicationWillChangedStatusBarOrientationNotification:(NSNotification *) noti {
+    //之前的布局失效
+//    [self.collectView safeLayoutInvalidateLayout];
+}
+
+- (void)applicationDidChangedStatusBarOrientationNotification:(NSNotification *) noti {
+    //之前的布局失效
+    [self.collectView safeLayoutInvalidateLayout];
+    
+    NSIndexPath * indexPath = [NSIndexPath indexPathForItem:self.currentIndex inSection:0];
+    //这种方案总感觉不太行的样子 - -！
+    [UIView animateWithDuration:0.2 animations:^{
+        [self.collectView performBatchUpdates:^{
+            if (@available(iOS 14.0, *)) {
+                UICollectionViewLayoutAttributes * attributes = [self.collectView layoutAttributesForItemAtIndexPath:indexPath];
+                [self.collectView setContentOffset:CGPointMake(attributes.frame.origin.x, attributes.frame.origin.y) animated:NO];
+            }else{
+                [self.collectView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:NO];
+            }
+      } completion:nil];
     }];
 }
 
 #pragma mark - <HBBrowserDataSourceDelegate>
 //滚动中禁止工具栏操作
 - (void) forbiddenToolsWhileScrolling {
-    
+    _isForbiddenHandle = YES;
 }
 
 //滚动到了哪一个index
 - (void) collectionViewDidEndScrollToIndex:(NSInteger) index {
-    //_isForbiddenHandle = NO;
+    _isForbiddenHandle = NO;
     bool isScroll = _currentIndex != index;
     if (isScroll) {
         self.currentIndex = index;
-        //[self changedStatedToImageToolsAtIndex:index];
     }
     [self adjustFromCtl];
+    
+    NSIndexPath * indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    UICollectionViewCell * cell = [self.collectView cellForItemAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[HBBaseCollectionViewCell class]]) {
+        HBBaseCollectionViewCell * hb_cell = (HBBaseCollectionViewCell *)cell;
+        [hb_cell resetUI];
+    }
+    [self.browserToolsView show];
 }
 
 //退出图片视频浏览
 - (void) hideBrowser:(CGRect)dimissRect {
-    UICollectionViewCell * currentCell = self.cv.centerCell;
+    UICollectionViewCell * currentCell = self.collectView.centerCell;
     HBBaseCollectionViewCell * cell = (HBBaseCollectionViewCell *)currentCell;
     self.dissMissRect = dimissRect;
     HBDataItem * item = self.dataSourceArray[cell.currentIndex];
@@ -99,16 +146,39 @@
 
 //手势时隐藏工具栏
 - (void) hideToolsWhileGestures:(BOOL)hide {
-    
+    if (hide) {
+        if (!self.browserToolsView.hidden) {
+            [self.browserToolsView hide];
+        }
+    }else{
+        if (self.browserToolsView.hidden) {
+            [self.browserToolsView show];
+        }
+    }
 }
 
 //原图下载进度
 - (void) orignalImageDownLoadProgress:(CGFloat)progressValue {
-    
+    self.browserToolsView.progressValue = progressValue;
 }
 
 //原图是否下载成功
 - (void) orignalImageDownLoadSucess:(BOOL)sucess {
+    self.browserToolsView.isDownLoadFinish = sucess;
+}
+
+- (void)clickEventForDownloadOrignalImage {
+    if (!_isForbiddenHandle) {
+         UICollectionViewCell * currentCell = self.collectView.centerCell;
+         if ([currentCell isKindOfClass:[HBBaseCollectionViewCell class]]) {
+             HBBaseCollectionViewCell * cell = (HBBaseCollectionViewCell *)currentCell;
+             [cell updateUI];
+         }
+    }
+}
+
+//工具栏点击事件
+- (void)hbImageToolsSubViewsClickEvent:(NSInteger)itemIndex {
     
 }
 
@@ -120,10 +190,20 @@
 }
 
 #pragma mark - update size
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-//    self.browserToolsView.frame = CGRectMake(0, self.view.bounds.size.height - [CCHelper imageToolsHeight] - [CCHelper safeAreaInsets], self.view.bounds.size.width, [CCHelper imageToolsHeight]);
-//    self.browserTopView.frame = CGRectMake(0, [CCHelper safeAreaInsets] + [CCHelper topToolsInsets], self.view.bounds.size.width, [CCHelper imageToolsHeight]);
+- (void) updateToolsSize {
+    NSInteger safeBottom = 0;
+    if (@available(iOS 11.0, *)) {
+        safeBottom = self.view.safeAreaInsets.bottom;
+    }
+    self.browserToolsView.frame = CGRectMake(0,
+                                             CGRectGetHeight(self.view.bounds) - [HBHelper hbToolsHeight] - [HBHelper hbSafeBottom] - safeBottom,
+                                             self.view.bounds.size.width,
+                                             [HBHelper hbToolsHeight]);
+    if (![self.view.subviews.lastObject isEqual:[self.browserToolsView class]]) {
+        [UIView animateWithDuration:0.25 animations:^{
+            [self.view bringSubviewToFront:self.browserToolsView];
+        }];
+    }
 }
 
 #pragma mark - readonly
@@ -145,16 +225,16 @@
 }
 
 #pragma mark - getter
-- (HBCollectionView *)cv {
-    if (!_cv) {
-        _cv = [[HBCollectionView alloc] initWithFrame:CGRectMake(-10, 0, [UIScreen mainScreen].bounds.size.width + 20, [UIScreen mainScreen].bounds.size.height)];
-        _cv.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        _cv.dataSource = self.dataSource;
-        _cv.delegate = self.dataSource;
-        _cv.hidden = YES;//显示动画所需
-        [self.view addSubview:_cv];
+- (HBCollectionView *)collectView {
+    if (!_collectView) {
+        _collectView = [[HBCollectionView alloc] initWithFrame:CGRectMake(-10, 0, [UIScreen mainScreen].bounds.size.width + 20, [UIScreen mainScreen].bounds.size.height)];
+        _collectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        _collectView.dataSource = self.dataSource;
+        _collectView.delegate = self.dataSource;
+        _collectView.hidden = YES;//显示动画所需
+        [self.view addSubview:_collectView];
     }
-    return _cv;
+    return _collectView;
 }
 
 - (HBBrowserDataSource *)dataSource {
@@ -164,6 +244,17 @@
         _dataSource.delegate = self;
     }
     return _dataSource;
+}
+
+- (HBToolsView *)browserToolsView {
+    if (!_browserToolsView) {
+        _browserToolsView = [[HBToolsView alloc] initWithFrame:CGRectZero];
+        _browserToolsView.delegate = self;
+        _browserToolsView.isNeedAutoHide = YES;
+        _browserToolsView.imgDataArray = @[[UIImage imageNamed:@"download"],[UIImage imageNamed:@"menu"],[UIImage imageNamed:@"more"]];
+        [self.view addSubview:_browserToolsView];
+    }
+    return _browserToolsView;
 }
 
 @end

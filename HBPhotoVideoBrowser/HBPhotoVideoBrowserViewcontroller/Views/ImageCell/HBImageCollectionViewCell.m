@@ -339,6 +339,7 @@
 
 //下载原图完成之后 更新UI
 - (void) updateUI {
+    [super updateUI];
     if (!self.imageScrollView.imageView.image) {
         return;
     }

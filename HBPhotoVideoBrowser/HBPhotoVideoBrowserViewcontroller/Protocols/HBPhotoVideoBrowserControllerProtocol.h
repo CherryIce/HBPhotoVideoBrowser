@@ -13,9 +13,7 @@
 @optional
 - (void) hideBrowserControllerAtIndex:(NSInteger) index item:(HBDataItem *) item;
 
-- (void) showMoreCUrrentMessageAtIndex:(NSInteger) index item:(HBDataItem *) item;
-
-- (void) sendCurrentMessageAtIndex:(NSInteger) index item:(HBDataItem *) item;
+- (void) longPanBrowserViewAtIndex:(NSInteger) index item:(HBDataItem *) item;
 
 @end
 

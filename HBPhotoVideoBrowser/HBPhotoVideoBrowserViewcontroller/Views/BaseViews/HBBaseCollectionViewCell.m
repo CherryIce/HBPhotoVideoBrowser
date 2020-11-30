@@ -19,6 +19,10 @@
     // to do something
 }
 
+- (void)updateUI {
+    // to do something
+}
+
 #pragma mark - getter
 - (HBLoadView *)loading {
     if (!_loading) {

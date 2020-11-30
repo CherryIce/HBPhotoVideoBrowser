@@ -10,6 +10,7 @@
 #import "HBDataItem.h"
 #import "UIViewController+HBTransition.h"
 #import "HBPhotoVideoBrowserControllerProtocol.h"
+#import "HBToolsView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,6 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
 //入场动画视图
 @property (nonatomic , strong , nullable) UIView * presentingView;
 
+//底部工具栏
+@property (nonatomic , strong) HBToolsView * browserToolsView;
+
 //消失前的frame
 @property (nonatomic , assign) CGRect dissMissRect;
 
@@ -41,6 +45,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 //显示数据 不需要调用...
 - (void) prepareLoad;
+
+//长按手势操作
+- (void) browserLpGesture;
+
+//工具栏点击事件
+- (void)hbImageToolsSubViewsClickEvent:(NSInteger)itemIndex;
 
 @end
 
