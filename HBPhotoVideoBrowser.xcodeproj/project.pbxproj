@@ -23,7 +23,6 @@
 		46724B9E2537037400A7C6EC /* HBCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46724B9D2537037400A7C6EC /* HBCollectionView.m */; };
 		46724BA72537038E00A7C6EC /* HBFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 46724BA62537038E00A7C6EC /* HBFlowLayout.m */; };
 		46808B5C25304199005EF5AA /* HBPhotoVideoBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46808B5B25304199005EF5AA /* HBPhotoVideoBrowserViewController.m */; };
-		46808B6E25304444005EF5AA /* HBBaseCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46808B6D25304444005EF5AA /* HBBaseCollectionViewCell.m */; };
 		46808B772530466D005EF5AA /* HBVideoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46808B762530466D005EF5AA /* HBVideoCollectionViewCell.m */; };
 		46808B7D2530468A005EF5AA /* HBImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46808B7C2530468A005EF5AA /* HBImageCollectionViewCell.m */; };
 		46AB0E67256B5BD6009AC684 /* menu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46AB0E61256B5BD6009AC684 /* menu@2x.png */; };
@@ -109,8 +108,6 @@
 		46808B5B25304199005EF5AA /* HBPhotoVideoBrowserViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HBPhotoVideoBrowserViewController.m; sourceTree = "<group>"; };
 		46808B6725304396005EF5AA /* HBCellDataProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HBCellDataProtocol.h; sourceTree = "<group>"; };
 		46808B68253043B1005EF5AA /* HBCellEventProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HBCellEventProtocol.h; sourceTree = "<group>"; };
-		46808B6C25304444005EF5AA /* HBBaseCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HBBaseCollectionViewCell.h; sourceTree = "<group>"; };
-		46808B6D25304444005EF5AA /* HBBaseCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HBBaseCollectionViewCell.m; sourceTree = "<group>"; };
 		46808B752530466D005EF5AA /* HBVideoCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HBVideoCollectionViewCell.h; sourceTree = "<group>"; };
 		46808B762530466D005EF5AA /* HBVideoCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HBVideoCollectionViewCell.m; sourceTree = "<group>"; };
 		46808B7B2530468A005EF5AA /* HBImageCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HBImageCollectionViewCell.h; sourceTree = "<group>"; };
@@ -291,7 +288,6 @@
 				46E8F314255E7D2C00BC021F /* HBMediaPlayer */,
 				46724B9B2537033900A7C6EC /* CollectionView */,
 				46724B912536FC3700A7C6EC /* LoadView */,
-				46808B6B25304419005EF5AA /* BaseViews */,
 				46808B6A253043EB005EF5AA /* VideoCell */,
 				46808B69253043C7005EF5AA /* ImageCell */,
 			);
@@ -347,15 +343,6 @@
 				46808B762530466D005EF5AA /* HBVideoCollectionViewCell.m */,
 			);
 			path = VideoCell;
-			sourceTree = "<group>";
-		};
-		46808B6B25304419005EF5AA /* BaseViews */ = {
-			isa = PBXGroup;
-			children = (
-				46808B6C25304444005EF5AA /* HBBaseCollectionViewCell.h */,
-				46808B6D25304444005EF5AA /* HBBaseCollectionViewCell.m */,
-			);
-			path = BaseViews;
 			sourceTree = "<group>";
 		};
 		46E8F314255E7D2C00BC021F /* HBMediaPlayer */ = {
@@ -662,7 +649,6 @@
 				46E8F322255E7D2C00BC021F /* HBMediaPlayerView.m in Sources */,
 				46724B132534550500A7C6EC /* HBBrowserDataSource.m in Sources */,
 				46724B572536DB1200A7C6EC /* HBDismissTransition.m in Sources */,
-				46808B6E25304444005EF5AA /* HBBaseCollectionViewCell.m in Sources */,
 				46808B7D2530468A005EF5AA /* HBImageCollectionViewCell.m in Sources */,
 				46278BAC2567BB390045994C /* HBImgToolsCell.m in Sources */,
 				46724B5E2536DB8800A7C6EC /* HBHelper.m in Sources */,

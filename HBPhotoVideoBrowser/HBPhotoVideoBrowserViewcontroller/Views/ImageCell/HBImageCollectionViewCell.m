@@ -9,6 +9,7 @@
 #import <SDWebImage.h>
 #import "HBScrollView.h"
 #import "HBHelper.h"
+#import "HBLoadView.h"
 
 @interface HBImageCollectionViewCell()<UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
@@ -20,6 +21,10 @@
 @property (nonatomic, assign) CGRect    startFrame;
 
 @property (nonatomic, assign) ImageType imgType;
+
+@property (nonatomic , strong) HBDataItem * dataItem;
+
+@property (nonatomic , strong) HBLoadView * loading;
 
 @end
 
@@ -37,9 +42,65 @@
     return self;
 }
 
-//重置scale
-- (void)resetUI {
+#pragma mark -  HBCellDataDelegate
+- (void) adjustUI {
+    //重置scale
     self.imageScrollView.zoomScale = 1;
+}
+
+- (void)setData:(HBDataItem *)data delegate:(id<HBCellEventDelegate>)delegate{
+    _delegate = delegate;
+    self.dataItem = data;
+    /**
+     优先级： 大图链接 >  小图链接 > image
+     */
+    if (self.dataItem.dataType == HBDataTypeIMAGE) {
+        //判断加载方式
+        NSURL * url ;
+        UIImage * img ;
+        //判断加载方式
+        if (self.dataItem.dataURL) {
+            if (self.dataItem.orignalImage) {
+                img = self.dataItem.orignalImage;
+            }
+            else {
+                if (self.dataItem.thumbnailURL) {
+                    if (self.dataItem.smallImage) {
+                        img = self.dataItem.smallImage;
+                    }else{
+                        url = self.dataItem.thumbnailURL;
+                    }
+                }
+                else{
+                    url = self.dataItem.dataURL;
+                }
+            }
+        }
+        else if (self.dataItem.thumbnailURL){
+            if (self.dataItem.smallImage) {
+                img = self.dataItem.smallImage;
+            }
+            else{
+                url = self.dataItem.thumbnailURL;
+            }
+        }
+        else if (self.dataItem.image){
+            img = self.dataItem.image;
+        }
+        
+        
+        if (img) {
+            self.imageScrollView.imageView.image = img;
+            [self resetlayoutWithImage:img];
+        }
+        else{
+            if (url) {
+                [self downLoadImageFromURL:url];
+            }else{
+                NSLog(@"error for HBDataItem class");
+            }
+        }
+    }
 }
 
 #pragma mark - Gestures
@@ -183,61 +244,6 @@
     }
 }
 
-#pragma mark - data
-- (void)setData:(HBDataItem *)data atItem:(NSInteger)item{
-    [super setData:data atItem:item];
-    /**
-     优先级： 大图链接 >  小图链接 > image
-     */
-    if (self.dataItem.dataType == HBDataTypeIMAGE) {
-        //判断加载方式
-        NSURL * url ;
-        UIImage * img ;
-        //判断加载方式
-        if (self.dataItem.dataURL) {
-            if (self.dataItem.orignalImage) {
-                img = self.dataItem.orignalImage;
-            }
-            else {
-                if (self.dataItem.thumbnailURL) {
-                    if (self.dataItem.smallImage) {
-                        img = self.dataItem.smallImage;
-                    }else{
-                        url = self.dataItem.thumbnailURL;
-                    }
-                }
-                else{
-                    url = self.dataItem.dataURL;
-                }
-            }
-        }
-        else if (self.dataItem.thumbnailURL){
-            if (self.dataItem.smallImage) {
-                img = self.dataItem.smallImage;
-            }
-            else{
-                url = self.dataItem.thumbnailURL;
-            }
-        }
-        else if (self.dataItem.image){
-            img = self.dataItem.image;
-        }
-        
-        
-        if (img) {
-            self.imageScrollView.imageView.image = img;
-            [self resetlayoutWithImage:img];
-        }
-        else{
-            if (url) {
-                [self downLoadImageFromURL:url];
-            }else{
-                NSLog(@"error for HBDataItem class");
-            }
-        }
-    }
-}
-
 //根据图片大小设置frame
 - (void)resetlayoutWithImage:(UIImage *)image {
     if (!image) {
@@ -338,8 +344,7 @@
 }
 
 //下载原图完成之后 更新UI
-- (void) updateUI {
-    [super updateUI];
+- (void) loadOrignalImage {
     if (!self.imageScrollView.imageView.image) {
         return;
     }
@@ -416,9 +421,21 @@
     }
 }
 
-- (void)dealloc {
+- (HBLoadView *)loading {
+    if (!_loading) {
+        _loading = [[HBLoadView alloc] initWithFrame:CGRectZero];
+    }
+    return _loading;
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    [super willMoveToSuperview:newSuperview];
+    //code..
     [[SDWebImageManager sharedManager] cancelAll];
 }
 
+- (void)dealloc {
+    [[SDWebImageManager sharedManager] cancelAll];
+}
 
 @end

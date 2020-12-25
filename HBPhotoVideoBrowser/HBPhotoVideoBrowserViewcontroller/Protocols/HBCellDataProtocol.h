@@ -8,11 +8,18 @@
 #ifndef HBCellDataProtocol_h
 #define HBCellDataProtocol_h
 
+#import "HBCellEventProtocol.h"
 #import "HBDataItem.h"
 
 @protocol HBCellDataDelegate <NSObject>
 
-- (void) setData:(HBDataItem *)data atItem:(NSInteger)item;
+@required
+- (void) setData:(HBDataItem *)data delegate:(id<HBCellEventDelegate>)delegate;
+
+@optional
+- (void) loadOrignalImage;
+
+- (void) adjustUI;
 
 @end
 

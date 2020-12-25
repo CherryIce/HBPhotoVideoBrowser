@@ -8,7 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "HBBrowserDataSourceProtocol.h"
-#import "HBBaseCollectionViewCell.h"
+#import "HBCellDataProtocol.h"
+#import "HBDataItem.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

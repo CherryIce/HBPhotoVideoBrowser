@@ -86,9 +86,8 @@
 #pragma mark - <UICollectionViewDelegate,UICollectionViewDataSource>
 - (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
     HBDataItem * item = self.dataSourceArray[indexPath.item];
-    HBBaseCollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:[self reuseIdentifierForCellClass:item.cellClass collectionView:collectionView] forIndexPath:indexPath];
-    [cell setData:item atItem:indexPath.item];
-    cell.delegate = self;
+    UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:[self reuseIdentifierForCellClass:item.cellClass collectionView:collectionView] forIndexPath:indexPath];
+    [(id<HBCellDataDelegate>)cell setData:item delegate:self];
     return cell;
 }
 
@@ -109,10 +108,7 @@
 - (void)collectionView:(UICollectionView *)collectionView
   didEndDisplayingCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
-    if ([cell isKindOfClass:[HBBaseCollectionViewCell class]]) {
-        HBBaseCollectionViewCell * hb_cell = (HBBaseCollectionViewCell *)cell;
-        [hb_cell resetUI];
-    }
+    [(id<HBCellDataDelegate>)cell adjustUI];
 }
 
 #pragma mark - <HBCellEventDelegate>

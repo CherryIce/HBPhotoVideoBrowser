@@ -8,6 +8,7 @@
 #import "HBVideoCollectionViewCell.h"
 #import "HBHelper.h"
 #import "HBMediaPlayerView.h"
+#import "HBLoadView.h"
 
 @interface HBVideoCollectionViewCell ()<UIGestureRecognizerDelegate,HBMediaPlayerDelegate>
 
@@ -20,6 +21,10 @@
 
 //动画使用
 @property (nonatomic, strong) UIImageView * transtionImgV;
+
+@property (nonatomic , strong) HBDataItem * dataItem;
+
+@property (nonatomic , strong) HBLoadView * loading;
 
 @end
 
@@ -34,16 +39,19 @@
     return self;
 }
 
+#pragma mark -  HBCellDataDelegate
 //滑动时暂停播放状态
-- (void) resetUI {
-    [super resetUI];
+- (void) adjustUI {
     [self.playerView pause];
     [self.playerView changPlayerToolsStatus:NO];
 }
 
-- (void)updateUI {
-    [super updateUI];
-    //code...
+- (void)setData:(HBDataItem *)data delegate:(id<HBCellEventDelegate>)delegate{
+    _delegate = delegate;
+    self.dataItem = data;
+    if (data.dataType == HBDataTypeVIDEO) {
+        self.playerView.mediaURL = data.dataURL;
+    }
 }
 
 #pragma mark - Gestures
@@ -183,14 +191,6 @@
     return YES;
 }
 
-#pragma mark - setter
-- (void)setData:(HBDataItem *)data atItem:(NSInteger)item {
-    [super setData:data atItem:item];
-    if (data.dataType == HBDataTypeVIDEO) {
-        self.playerView.mediaURL = data.dataURL;
-    }
-}
-
 - (void) hideBrowser {
     if (self.delegate && [self.delegate respondsToSelector:@selector(pan_hideBrowser:)]) {
         [self.delegate pan_hideBrowser:self.transtionImgV.frame];
@@ -244,6 +244,18 @@
         [self.contentView addSubview:_transtionImgV];
     }
     return _transtionImgV;
+}
+
+- (HBLoadView *)loading {
+    if (!_loading) {
+        _loading = [[HBLoadView alloc] initWithFrame:CGRectZero];
+    }
+    return _loading;
+}
+
+- (void)willMoveToSuperview:(UIView *)newSuperview {
+    [super willMoveToSuperview:newSuperview];
+    //code..
 }
 
 - (void)dealloc {

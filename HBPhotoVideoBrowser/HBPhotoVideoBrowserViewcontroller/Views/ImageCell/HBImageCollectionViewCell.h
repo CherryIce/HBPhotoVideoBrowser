@@ -5,11 +5,14 @@
 //  Created by hubin on 09/10/2020.
 //
 
-#import "HBBaseCollectionViewCell.h"
+#import <UIKit/UIKit.h>
+#import "HBCellDataProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HBImageCollectionViewCell : HBBaseCollectionViewCell
+@interface HBImageCollectionViewCell : UICollectionViewCell<HBCellDataDelegate>
+
+@property (nonatomic , weak) id<HBCellEventDelegate>delegate;
 
 @end
 

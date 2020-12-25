@@ -111,19 +111,15 @@
     
     NSIndexPath * indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     UICollectionViewCell * cell = [self.collectView cellForItemAtIndexPath:indexPath];
-    if ([cell isKindOfClass:[HBBaseCollectionViewCell class]]) {
-        HBBaseCollectionViewCell * hb_cell = (HBBaseCollectionViewCell *)cell;
-        [hb_cell resetUI];
-    }
+    [(id<HBCellDataDelegate>)cell adjustUI];
     [self.browserToolsView show];
 }
 
 //退出图片视频浏览
 - (void) hideBrowser:(CGRect)dimissRect {
     UICollectionViewCell * currentCell = self.collectView.centerCell;
-    HBBaseCollectionViewCell * cell = (HBBaseCollectionViewCell *)currentCell;
     self.dissMissRect = dimissRect;
-    HBDataItem * item = self.dataSourceArray[cell.currentIndex];
+    HBDataItem * item = self.dataSourceArray[_currentIndex];
     if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
         //不需要传 横屏执行渐隐动画就行了 想花里胡哨的可以再加一个新动画
     }else{
@@ -131,11 +127,11 @@
     }
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(hideBrowserControllerAtIndex:item:)]) {
-        [self.delegate hideBrowserControllerAtIndex:cell.currentIndex item:item];
+        [self.delegate hideBrowserControllerAtIndex:_currentIndex item:item];
     }
     [self dismissHBViewControllerAnimated:YES completion:nil];
     [UIView animateWithDuration:0.1 animations:^{
-        cell.hidden = item.translationView ? YES : NO;
+        currentCell.hidden = item.translationView ? YES : NO;
     }];
 }
 
@@ -169,11 +165,8 @@
 
 - (void)clickEventForDownloadOrignalImage {
     if (!_isForbiddenHandle) {
-         UICollectionViewCell * currentCell = self.collectView.centerCell;
-         if ([currentCell isKindOfClass:[HBBaseCollectionViewCell class]]) {
-             HBBaseCollectionViewCell * cell = (HBBaseCollectionViewCell *)currentCell;
-             [cell updateUI];
-         }
+        UICollectionViewCell * currentCell = self.collectView.centerCell;
+        [(id<HBCellDataDelegate>)currentCell loadOrignalImage];
     }
 }
 
