@@ -9,7 +9,7 @@
 #import <SDWebImage.h>
 #import "HBScrollView.h"
 #import "HBHelper.h"
-#import "HBLoadView.h"
+#import "UICollectionViewCell+HBAnimation.h"
 
 @interface HBImageCollectionViewCell()<UIScrollViewDelegate,UIGestureRecognizerDelegate>
 
@@ -23,8 +23,6 @@
 @property (nonatomic, assign) ImageType imgType;
 
 @property (nonatomic , strong) HBDataItem * dataItem;
-
-@property (nonatomic , strong) HBLoadView * loading;
 
 @end
 
@@ -332,11 +330,11 @@
     [self.imageScrollView.imageView loadImageWithURL:url placeholderImage:placeholderImage progress:^(CGFloat progress) {
         dispatch_sync(dispatch_get_main_queue(), ^{
             if (!placeholderImage) {
-                [self.loading showInView:self.contentView];
+                [self startAnimation];
             }
         });
     } completed:^(bool isSucess, UIImage * _Nullable image) {
-        [self.loading dismiss];
+        [self stopAnimation];
         if (image) {
             [self resetlayoutWithImage:image];
         }
@@ -419,13 +417,6 @@
     if (self.imageScrollView.imageView.image) {
         [self resetlayoutWithImage:self.imageScrollView.imageView.image];
     }
-}
-
-- (HBLoadView *)loading {
-    if (!_loading) {
-        _loading = [[HBLoadView alloc] initWithFrame:CGRectZero];
-    }
-    return _loading;
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {

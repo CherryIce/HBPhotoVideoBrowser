@@ -8,7 +8,7 @@
 #import "HBVideoCollectionViewCell.h"
 #import "HBHelper.h"
 #import "HBMediaPlayerView.h"
-#import "HBLoadView.h"
+#import "UICollectionViewCell+HBAnimation.h"
 
 @interface HBVideoCollectionViewCell ()<UIGestureRecognizerDelegate,HBMediaPlayerDelegate>
 
@@ -23,8 +23,6 @@
 @property (nonatomic, strong) UIImageView * transtionImgV;
 
 @property (nonatomic , strong) HBDataItem * dataItem;
-
-@property (nonatomic , strong) HBLoadView * loading;
 
 @end
 
@@ -204,9 +202,9 @@
 
 - (void) calculateBufferProgress:(CGFloat)progress {
     if (progress < 1) {
-        [self.loading showInView:self.contentView];
+        [self startAnimation];
     }else{
-        [self.loading dismiss];
+        [self stopAnimation];
         [UIView animateWithDuration:0.1f animations:^{
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
             self.transtionImgV.hidden = YES;
@@ -244,13 +242,6 @@
         [self.contentView addSubview:_transtionImgV];
     }
     return _transtionImgV;
-}
-
-- (HBLoadView *)loading {
-    if (!_loading) {
-        _loading = [[HBLoadView alloc] initWithFrame:CGRectZero];
-    }
-    return _loading;
 }
 
 - (void)willMoveToSuperview:(UIView *)newSuperview {

@@ -11,7 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HBLoadView : UIView
 
-- (void) showInView:(UIView *) superView;
+- (void) show;
 
 - (void) dismiss;
 

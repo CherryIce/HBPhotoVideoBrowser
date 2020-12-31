@@ -52,7 +52,20 @@
 - (void) setup {
     self.loadingLayer.strokeStart = 0.0;
     self.loadingLayer.strokeEnd = 0.75;
-    
+}
+
+- (void) show{
+    [self startAnimation];
+}
+
+- (void) dismiss {
+    [UIView animateWithDuration:0.25 animations:^{
+        [self.layer removeAllAnimations];
+        [self removeFromSuperview];
+    }];
+}
+
+- (void) startAnimation {
     CABasicAnimation * basicAni = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
     basicAni.fromValue = 0;
     basicAni.toValue = [NSNumber numberWithFloat:M_PI*2.0];
@@ -61,23 +74,6 @@
     basicAni.autoreverses = false;
     basicAni.fillMode = kCAFillModeForwards;
     [self.layer addAnimation:basicAni forKey:nil];
-}
-
-- (void) showInView:(UIView *) superView {
-    if (!superView) {
-        return;
-    }
-    self.center = superView.center;
-    [UIView animateWithDuration:0.25 animations:^{
-        [superView addSubview:self];
-        [superView bringSubviewToFront:self];
-    }];
-}
-
-- (void) dismiss {
-    [UIView animateWithDuration:0.25 animations:^{
-        [self removeFromSuperview];
-    }];
 }
 
 @end
