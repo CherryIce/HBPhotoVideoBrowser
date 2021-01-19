@@ -48,6 +48,7 @@
     _delegate = delegate;
     self.dataItem = data;
     if (data.dataType == HBDataTypeVIDEO) {
+        self.playerView.isNeedAutoPlay = data.isJustCurrentIndexNeedAutoPlay;
         self.playerView.mediaURL = data.dataURL;
     }
 }
@@ -222,7 +223,7 @@
     if (!_playerView) {
         _playerView = [[HBMediaPlayerView alloc] initWithFrame:self.bounds];
         _playerView.delegate = self;
-        _playerView.isNeedAutoPlay = YES;
+//        _playerView.isNeedAutoPlay = YES;
     }
     return _playerView;
 }

@@ -50,7 +50,6 @@
         @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599113659802&di=14f5966e66a5c8f3a4204629074cb436&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fpic%2Fa%2F29%2F3e37752375.jpg",
         @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599113659802&di=dc7e3491ff1a5e3965e8369026ecfe81&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201707%2F07%2F20170707151853_Xr2UP.jpeg",
         @"https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2800401875,125020289&fm=26&gp=0.jpg",
-        @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599113929424&di=a21b0269a633a0a9c3e798f2c9789063&imgtype=0&src=http%3A%2F%2Fimg1.imgtn.bdimg.com%2Fit%2Fu%3D3493978666%2C3694725441%26fm%3D214%26gp%3D0.jpg",
         @"https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2723596487,26167808&fm=26&gp=0.jpg",
         @"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1138426114,2407713788&fm=26&gp=0.jpg",
         @"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599113659795&di=5d72ba85a2571231f814e8d183f54023&imgtype=0&src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20180802%2F00%2F1533140210-voaArpNuhm.png",
@@ -112,6 +111,11 @@
         HBDataItem * item = (HBDataItem *) obj;
         //有dimiss动画 不传没有dismiss动画
         item.translationView = cell.imageView;
+        
+        //just do it 
+        if (idx == indexPath.item && item.dataType == HBDataTypeVIDEO) {
+            item.isJustCurrentIndexNeedAutoPlay = YES;
+        }
 
         [tempArr addObject:item];
     }];

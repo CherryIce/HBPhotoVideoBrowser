@@ -67,6 +67,11 @@ NS_ASSUME_NONNULL_BEGIN
 */
 @property (nonatomic , strong) id extraData;
 
+/**
+ 由于collectionview复用机制问题 不建议设置每个视频都需要自动播放 此属性建议只针对当前点击打开的第一视图是视频的情况
+ */
+@property (nonatomic,assign) BOOL isJustCurrentIndexNeedAutoPlay;
+
 /** ------------- 快速创建方法 ------------- **/
 - (instancetype) initWithImage:(UIImage *) image;
 
