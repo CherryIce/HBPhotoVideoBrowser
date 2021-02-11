@@ -210,6 +210,9 @@
 		46724B2225345EFE00A7C6EC /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				46278B952567B74C0045994C /* HBToolsView */,
+				46808B5A25304199005EF5AA /* HBPhotoVideoBrowserViewController.h */,
+				46808B5B25304199005EF5AA /* HBPhotoVideoBrowserViewController.m */,
 				46724B2325345F3E00A7C6EC /* HBExampleCell.h */,
 				46724B2425345F3E00A7C6EC /* HBExampleCell.m */,
 			);
@@ -280,8 +283,6 @@
 				46808B6525304201005EF5AA /* Animations */,
 				46808B64253041F0005EF5AA /* Datas */,
 				46808B63253041A6005EF5AA /* Views */,
-				46808B5A25304199005EF5AA /* HBPhotoVideoBrowserViewController.h */,
-				46808B5B25304199005EF5AA /* HBPhotoVideoBrowserViewController.m */,
 			);
 			path = HBPhotoVideoBrowserViewcontroller;
 			sourceTree = "<group>";
@@ -289,7 +290,6 @@
 		46808B63253041A6005EF5AA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				46278B952567B74C0045994C /* HBToolsView */,
 				46E8F314255E7D2C00BC021F /* HBMediaPlayer */,
 				46724B9B2537033900A7C6EC /* CollectionView */,
 				46724B912536FC3700A7C6EC /* LoadView */,

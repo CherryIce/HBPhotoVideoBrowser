@@ -7,7 +7,7 @@
 
 #import "HBPresentTransition.h"
 #import "HBHelper.h"
-#import "HBPhotoVideoBrowserViewController.h"
+#import "HBPhotoVideoBrowserControllerProtocol.h"
 
 @implementation HBPresentTransition
 
@@ -19,15 +19,15 @@
     
     self.transitionContext = transitionContext;
     
-    HBPhotoVideoBrowserViewController *toViewController = (HBPhotoVideoBrowserViewController*)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    UIViewController * toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
 
     UIView *containerView = [transitionContext containerView];
     NSTimeInterval duration = [self transitionDuration:transitionContext];
     
-    UIView * view = toViewController.presentingView;
+    UIView * view = [(id <HBPhotoVideoBrowserViewControllerDelegate>)toViewController presentingView];
     UIImage * transImg;
     if (!view) {
-        HBDataItem * item = [toViewController currentDataItem];
+        HBDataItem * item = [(id <HBPhotoVideoBrowserViewControllerDelegate>)toViewController currentDataItem];
         view = item.translationView;
         transImg = item.orignalImage ? item.orignalImage : item.smallImage;
     }
@@ -71,7 +71,7 @@
         } completion:^(BOOL finished) {
             self.presentingImageView.hidden = NO;
             [self.presentingImageView removeFromSuperview];
-            [toViewController prepareLoad];
+            [(id <HBPhotoVideoBrowserViewControllerDelegate>)toViewController prepareLoad];
             [transitionContext completeTransition:YES];
         }];
     }else{
@@ -83,7 +83,7 @@
         } completion:^(BOOL finished) {
             self.presentingImageView.hidden = YES;
             [self.presentingImageView removeFromSuperview];
-            [toViewController prepareLoad];
+            [(id <HBPhotoVideoBrowserViewControllerDelegate>)toViewController prepareLoad];
             [transitionContext completeTransition:YES];
         }];
     }

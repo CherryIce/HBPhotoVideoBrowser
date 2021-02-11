@@ -25,6 +25,16 @@
 
 @implementation HBPhotoVideoBrowserViewController
 
+@synthesize currentIndex;
+
+@synthesize dataSourceArray;
+
+@synthesize dismissView;
+
+@synthesize dissMissRect;
+
+@synthesize presentingView;
+
 - (instancetype)init {
     self = [super init];
     if (self) {
@@ -50,7 +60,7 @@
     if (!self.isViewLoaded) {
         return;
     }
-    NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:_currentIndex inSection:0];
+    NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:self.currentIndex inSection:0];
     if (@available(iOS 14.0, *)) {
         UICollectionViewLayoutAttributes * attributes = [self.collectView layoutAttributesForItemAtIndexPath:scrollIndexPath];
         [self.collectView setContentOffset:CGPointMake(attributes.frame.origin.x, attributes.frame.origin.y) animated:NO];
@@ -103,7 +113,7 @@
 //滚动到了哪一个index
 - (void) collectionViewDidEndScrollToIndex:(NSInteger) index {
     _isForbiddenHandle = NO;
-    bool isScroll = _currentIndex != index;
+    bool isScroll = self.currentIndex != index;
     if (isScroll) {
         self.currentIndex = index;
     }
@@ -119,7 +129,7 @@
 - (void) hideBrowser:(CGRect)dimissRect {
     UICollectionViewCell * currentCell = self.collectView.centerCell;
     self.dissMissRect = dimissRect;
-    HBDataItem * item = self.dataSourceArray[_currentIndex];
+    HBDataItem * item = self.dataSourceArray[self.currentIndex];
     if (UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)) {
         //不需要传 横屏执行渐隐动画就行了 想花里胡哨的可以再加一个新动画
     }else{
@@ -127,7 +137,7 @@
     }
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(hideBrowserControllerAtIndex:item:)]) {
-        [self.delegate hideBrowserControllerAtIndex:_currentIndex item:item];
+        [self.delegate hideBrowserControllerAtIndex:self.currentIndex item:item];
     }
     [self dismissHBViewControllerAnimated:YES completion:nil];
     [UIView animateWithDuration:0.1 animations:^{
@@ -201,17 +211,17 @@
 
 #pragma mark - readonly
 - (HBDataItem *)currentDataItem {
-    return self.dataSourceArray[_currentIndex];
+    return self.dataSourceArray[self.currentIndex];
 }
 
 #pragma mark - setter
-- (void)setCurrentIndex:(NSUInteger)currentIndex {
-    _currentIndex = currentIndex;
-    NSInteger maxIndex = self.dataSourceArray.count - 1;
-    if (_currentIndex > maxIndex) {
-        _currentIndex = maxIndex;
-    }
-}
+//- (void)setCurrentIndex:(NSUInteger)currentIndex {
+//    _currentIndex = currentIndex;
+//    NSInteger maxIndex = self.dataSourceArray.count - 1;
+//    if (_currentIndex > maxIndex) {
+//        _currentIndex = maxIndex;
+//    }
+//}
 
 - (void)setIsAllowLpGesture:(BOOL)isAllowLpGesture {
     _isAllowLpGesture = isAllowLpGesture;

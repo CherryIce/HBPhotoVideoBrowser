@@ -7,7 +7,7 @@
 
 #import "HBDismissTransition.h"
 #import "HBHelper.h"
-#import "HBPhotoVideoBrowserViewController.h"
+#import "HBPhotoVideoBrowserControllerProtocol.h"
 
 @implementation HBDismissTransition
 
@@ -15,23 +15,23 @@
     self.transitionContext = transitionContext;
     
     //获取源控制器 注意不要写成 UITransitionContextFromViewKey
-    HBPhotoVideoBrowserViewController *fromVc = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *fromVc = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIView *containerView = [transitionContext containerView];
     
     NSTimeInterval duration = [self transitionDuration:transitionContext];
     
-    self.dimssImageView = [[UIImageView alloc] initWithFrame:fromVc.dissMissRect];
+    self.dimssImageView = [[UIImageView alloc] initWithFrame:[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dissMissRect]];
     //[containerView convertRect:fromVc.dismissImageView.frame fromView:fromVc.dismissImageView.superview]
     
-    if ([fromVc.dismissView isKindOfClass:[UIImageView class]]) {
-        UIImageView * imageView = (UIImageView *)fromVc.dismissView;
+    if ([[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView] isKindOfClass:[UIImageView class]]) {
+        UIImageView * imageView = (UIImageView *)[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView];
         self.dimssImageView.image = imageView.image;
     }else{
-        self.dimssImageView.image = [HBHelper snapshotView:fromVc.dismissView];
+        self.dimssImageView.image = [HBHelper snapshotView:[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView]];
     }
-    self.dimssImageView.contentMode = fromVc.dismissView.contentMode;
-    self.dimssImageView.clipsToBounds = fromVc.dismissView.clipsToBounds;
-    self.dimssImageView.layer.cornerRadius = fromVc.dismissView.layer.cornerRadius;
+    self.dimssImageView.contentMode = [(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].contentMode;
+    self.dimssImageView.clipsToBounds = [(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].clipsToBounds;
+    self.dimssImageView.layer.cornerRadius = [(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].layer.cornerRadius;
     
     [containerView addSubview:self.dimssImageView];
     
@@ -43,7 +43,7 @@
     [containerView bringSubviewToFront:self.dimssImageView];
     self.dimssImageView.hidden = NO;
     
-    if (!fromVc.dismissView) {
+    if (![(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView]) {
         [UIView animateWithDuration:duration animations:^{
             fromVc.view.alpha = 0;
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
@@ -59,10 +59,10 @@
         [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             fromVc.view.alpha = 0;
             //计算返回原控制器中image的位置
-            CGRect rect = [containerView convertRect:fromVc.dismissView.frame fromView:fromVc.dismissView.superview];
+            CGRect rect = [containerView convertRect:[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].frame fromView:[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].superview];
             self.dimssImageView.frame = rect;
         } completion:^(BOOL finished) {
-            fromVc.dismissView.hidden = NO;
+            [(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].hidden = NO;
             self.dimssImageView.hidden = NO;
             [self.dimssImageView removeFromSuperview];
             [transitionContext completeTransition:YES];
