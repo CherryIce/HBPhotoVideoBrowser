@@ -72,6 +72,8 @@
     
     for (int i = 0; i < urlStr.count; i++) {
         HBDataItem * item3 = [[HBDataItem alloc] initWithURL:[NSURL URLWithString:urlStr[i]] dataType:HBDataTypeIMAGE];
+        item3.dataURL = [NSURL URLWithString:urlStr[i]];
+        item3.orignalSize = 2048 + arc4random() % 3000;//随便写的
         item3.thumbnailURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?imageView&thumbnail=150z150",urlStr[i]]];
         [self.dataArray addObject:item3];
     }

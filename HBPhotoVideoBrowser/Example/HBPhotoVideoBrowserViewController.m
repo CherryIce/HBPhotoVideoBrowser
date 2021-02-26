@@ -123,6 +123,7 @@
     UICollectionViewCell * cell = [self.collectView cellForItemAtIndexPath:indexPath];
     [(id<HBCellDataDelegate>)cell adjustUI];
     [self.browserToolsView show];
+    self.browserToolsView.currItem = self.dataSourceArray[self.currentIndex];
 }
 
 //退出图片视频浏览
@@ -207,6 +208,7 @@
             [self.view bringSubviewToFront:self.browserToolsView];
         }];
     }
+    self.browserToolsView.currItem = self.dataSourceArray[self.currentIndex];
 }
 
 #pragma mark - readonly

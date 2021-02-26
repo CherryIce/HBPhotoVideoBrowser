@@ -37,9 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
 //长按手势操作
 - (void) browserLpGesture;
 
-//工具栏点击事件
-- (void)hbImageToolsSubViewsClickEvent:(NSInteger)itemIndex;
-
 @end
 
 NS_ASSUME_NONNULL_END
