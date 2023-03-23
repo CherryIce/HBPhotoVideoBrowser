@@ -32,6 +32,9 @@
 //对应消失到的视图
 @property (nonatomic , strong , nullable) UIView * dismissView;
 
+//对应开始消失的视图
+@property (nonatomic , readonly , nullable) UIView * dismissFromView;
+
 //显示数据 不需要调用...
 - (void) prepareLoad;
 

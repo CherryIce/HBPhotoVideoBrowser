@@ -69,4 +69,29 @@
     return _org_s;
 }
 
+- (BOOL)isLargeImage {
+    //大于5M算大图
+    long long limitLargeSize = 5 * 1024 * 1024;
+    if(_isLargeImage) return true;
+    if (_dataType == HBDataTypeIMAGE) {
+        if (_image) {
+            CGFloat width = CGImageGetWidth(_image.CGImage);
+            CGFloat height = CGImageGetHeight(_image.CGImage);
+            long long size = width * height;
+            if(size > limitLargeSize) {
+                return true;
+            }
+            return  false;
+        }else{
+            //网络图片最好是后台告知大小 不然很难顶
+            if(_orignalSize > limitLargeSize) {
+                return false;
+            }else{
+                return  false;
+            }
+        }
+    }
+    return false;
+}
+
 @end

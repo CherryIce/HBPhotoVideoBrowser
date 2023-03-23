@@ -34,8 +34,10 @@
 - (void) loadData {
     [self.collectionView registerClass:[HBExampleCell class] forCellWithReuseIdentifier:NSStringFromClass([HBExampleCell class])];
     
-//    HBDataItem * item = [[HBDataItem alloc] initWithImage:[UIImage imageNamed:@"strawberry"]];
-//    [self.dataArray addObject:item];
+    
+    HBDataItem * item = [[HBDataItem alloc] initWithImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"0" ofType:@"jpg"]]];//[UIImage imageNamed:@"0.jpg"]
+//    item.isLargeImage = true;
+    [self.dataArray addObject:item];
 
     HBDataItem * item1 = [[HBDataItem alloc] initWithURL:[NSURL URLWithString:@"https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0200ff00000bdkpfpdd2r6fb5kf6m50&line=0.mp4"] dataType:HBDataTypeVIDEO];
     [self.dataArray addObject:item1];
@@ -112,7 +114,7 @@
 
         HBDataItem * item = (HBDataItem *) obj;
         //有dimiss动画 不传没有dismiss动画
-        item.translationView = cell.imageView;
+        item.translationView = item.isLargeImage ? cell.largeImageView : cell.imageView;
         
         //just do it 
         if (idx == indexPath.item && item.dataType == HBDataTypeVIDEO) {

@@ -49,6 +49,9 @@
 - (void)setData:(HBDataItem *)data delegate:(id<HBCellEventDelegate>)delegate{
     _delegate = delegate;
     self.dataItem = data;
+    
+    [self.imageScrollView.imageView setHidden:self.dataItem.isLargeImage];
+    [self.imageScrollView.largeImageView setHidden:!self.dataItem.isLargeImage];
     /**
      优先级： 大图链接 >  小图链接 > image
      */
@@ -88,7 +91,6 @@
         
         
         if (img) {
-            self.imageScrollView.imageView.image = img;
             [self resetlayoutWithImage:img];
         }
         else{
@@ -136,7 +138,7 @@
 //双击
 - (void) doubleClick:(UITapGestureRecognizer *) gesture {
     UIScrollView *scrollView = self.imageScrollView;
-    if(!self.imageScrollView.imageView.image) return;
+    if(!self.imageScrollView.imageView.image && !self.dataItem.isLargeImage) return;
     
     if(scrollView.zoomScale <= 1){
         // 1.catch the postion of the gesture
@@ -154,7 +156,7 @@
 
 //拖拽
 - (void) respondsToPan:(UIPanGestureRecognizer *) gesture {
-    if(!self.imageScrollView.imageView.image) return;
+    if(!self.imageScrollView.imageView.image && !self.dataItem.isLargeImage) return;
     CGPoint point       = CGPointZero;
     CGPoint location    = CGPointZero;
     CGPoint velocity    = CGPointZero;
@@ -165,7 +167,7 @@
         case UIGestureRecognizerStateBegan:{
             //NSLog(@"start");
             _startLocation  = location;
-            _startFrame     = self.imageScrollView.imageView.frame;
+            _startFrame     = self.dataItem.isLargeImage ? self.imageScrollView.largeImageView.frame : self.imageScrollView.imageView.frame;
             if (self.delegate && [self.delegate respondsToSelector:@selector(gestureToolsViewShouldHide:)]) {
                 [self.delegate gestureToolsViewShouldHide:YES];
             }
@@ -185,7 +187,11 @@
             CGFloat rateY = (self.startLocation.y - self.startFrame.origin.y) / self.startFrame.size.height;
             CGFloat y = location.y - height * rateY;
             
-            self.imageScrollView.imageView.frame = CGRectMake(x, y, width, height);
+            if (self.dataItem.isLargeImage) {
+                self.imageScrollView.largeImageView.frame = CGRectMake(x, y, width, height);
+            }else{
+                self.imageScrollView.imageView.frame = CGRectMake(x, y, width, height);
+            }
             
             self.superview.superview.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:percent];
         }
@@ -195,13 +201,17 @@
             //NSLog(@"cancel or end");
             if(fabs(point.y) > 200 || fabs(velocity.y) > 600){
                 // dismiss
-                self.startFrame = self.imageScrollView.imageView.frame;
+                self.startFrame = self.dataItem.isLargeImage ? self.imageScrollView.largeImageView.frame : self.imageScrollView.imageView.frame;
                 [self hideBrowser];
             }else{
                 //cancel
                 [UIView animateWithDuration:0.25 animations:^{
                     self.superview.superview.backgroundColor = [UIColor blackColor];
-                    self.imageScrollView.imageView.frame = self.startFrame;
+                    if(self.dataItem.isLargeImage) {
+                        self.imageScrollView.largeImageView.frame = self.startFrame;
+                    }else{
+                        self.imageScrollView.imageView.frame = self.startFrame;
+                    }
                 }];
                 
                 if (self.delegate && [self.delegate respondsToSelector:@selector(gestureToolsViewShouldHide:)]) {
@@ -223,7 +233,7 @@
 
 //长按
 - (void) lpRespond : (UILongPressGestureRecognizer *) gesture {
-    if (!self.imageScrollView.imageView.image) {
+    if (!self.imageScrollView.imageView.image && !self.dataItem.isLargeImage) {
           return;
     }
     if (gesture.state == UIGestureRecognizerStateBegan && [gesture isKindOfClass:[UILongPressGestureRecognizer class]]) {
@@ -236,7 +246,12 @@
 //hide
 - (void) hideBrowser {
     if (self.delegate && [self.delegate respondsToSelector:@selector(pan_hideBrowser:)]) {
-        CGRect frame =  [self.imageScrollView convertRect:self.imageScrollView.imageView.frame toView:[UIApplication sharedApplication].keyWindow];
+        CGRect frame =  CGRectZero;
+        if(self.dataItem.isLargeImage){
+            frame = [self.imageScrollView convertRect:self.imageScrollView.largeImageView.frame toView:[UIApplication sharedApplication].keyWindow];
+        }else{
+            frame = [self.imageScrollView convertRect:self.imageScrollView.imageView.frame toView:[UIApplication sharedApplication].keyWindow];
+        }
 //        CGRect frame = self.imageScrollView.imageView.frame;
         [self.delegate pan_hideBrowser:frame];
     }
@@ -308,15 +323,26 @@
     
     CGSize size = imageSize;
     
-    CGRect frame = self.imageScrollView.imageView.frame;
+    CGRect frame = self.dataItem.isLargeImage ? self.imageScrollView.largeImageView.frame : self.imageScrollView.imageView.frame;
     frame.origin = CGPointMake(0, 0);
     frame.size = size;
     
-    self.imageScrollView.imageView.frame = frame;
+    if (self.dataItem.isLargeImage) {
+        self.imageScrollView.largeImageView.frame = frame;
+        //保证先有大小范围才能绘制
+        [self.imageScrollView.largeImageView hb_setImage:image];
+    }else{
+        self.imageScrollView.imageView.frame = frame;
+        [self.imageScrollView.imageView setImage:image];
+    }
     self.imageScrollView.contentSize = imageSize;
     
     if (self.imgType != ImageLonglong) {
-        self.imageScrollView.imageView.center = CGPointMake(self.imageScrollView.bounds.size.width / 2, self.imageScrollView.bounds.size.height / 2);
+        if (self.dataItem.isLargeImage) {
+            self.imageScrollView.largeImageView.center = self.contentView.center;
+        }else{
+            self.imageScrollView.imageView.center = self.contentView.center;
+        }
     }
 }
 
@@ -327,18 +353,22 @@
         UIImageView * imageV = (UIImageView *)self.dataItem.translationView;
         placeholderImage = imageV.image;
     }
-    [self.imageScrollView.imageView loadImageWithURL:url placeholderImage:placeholderImage progress:^(CGFloat progress) {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            if (!placeholderImage) {
-                [self startAnimation];
+    if (self.dataItem.isLargeImage) {
+        [self.imageScrollView.largeImageView hb_setImageWithUrl:url];
+    }else{
+        [self.imageScrollView.imageView loadImageWithURL:url placeholderImage:placeholderImage progress:^(CGFloat progress) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                if (!placeholderImage) {
+                    [self startAnimation];
+                }
+            });
+        } completed:^(bool isSucess, UIImage * _Nullable image) {
+            [self stopAnimation];
+            if (image) {
+                [self resetlayoutWithImage:image];
             }
-        });
-    } completed:^(bool isSucess, UIImage * _Nullable image) {
-        [self stopAnimation];
-        if (image) {
-            [self resetlayoutWithImage:image];
-        }
-    }];
+        }];
+    }
 }
 
 //下载原图完成之后 更新UI
@@ -365,10 +395,11 @@
 #pragma mark - <UIScrollViewDelegate>
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView {
-     if (!self.imageScrollView.imageView.image) {
+     if ((!self.imageScrollView.imageView.image && !self.dataItem.isLargeImage) ||
+         (self.imageScrollView.largeImageView.frame.size.width == 0 && self.dataItem.isLargeImage)) {
            return;
      }
-    CGRect imageViewFrame = self.imageScrollView.imageView.frame;
+    CGRect imageViewFrame = self.dataItem.isLargeImage ? self.imageScrollView.largeImageView.frame : self.imageScrollView.imageView.frame;
     CGFloat width = imageViewFrame.size.width,
     height = imageViewFrame.size.height,
     sHeight = scrollView.bounds.size.height,
@@ -383,11 +414,15 @@
     } else {
         imageViewFrame.origin.x = (sWidth - width) / 2.0;
     }
-    self.imageScrollView.imageView.frame = imageViewFrame;
+    if(self.dataItem.isLargeImage) {
+        self.imageScrollView.largeImageView.frame = imageViewFrame;
+    }else{
+        self.imageScrollView.imageView.frame = imageViewFrame;
+    }
 }
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    return self.imageScrollView.imageView;
+    return self.dataItem.isLargeImage ? self.imageScrollView.largeImageView : self.imageScrollView.imageView;
 }
 
 #pragma mark - <UIGestureRecognizerDelegate>
@@ -414,7 +449,7 @@
     [super layoutSubviews];
     CGRect fitSize = CGRectMake(10, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     self.imageScrollView.frame = fitSize;
-    if (self.imageScrollView.imageView.image) {
+    if (self.imageScrollView.imageView.image && !self.dataItem.isLargeImage) {
         [self resetlayoutWithImage:self.imageScrollView.imageView.image];
     }
 }

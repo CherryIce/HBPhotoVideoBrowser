@@ -35,6 +35,8 @@
 
 @synthesize presentingView;
 
+@synthesize dismissFromView;//针对的是传的translationView非imageView
+
 - (instancetype)init {
     self = [super init];
     if (self) {
@@ -216,6 +218,14 @@
     return self.dataSourceArray[self.currentIndex];
 }
 
+- (UIView *)dismissFromView {
+    UICollectionViewCell * currentCell = self.collectView.centerCell;
+    HBDataItem * item = self.dataSourceArray[self.currentIndex];
+    //获取cell上面的图片视图
+    UIView * scrollView = currentCell.contentView.subviews.firstObject;
+    return item.isLargeImage ? scrollView.subviews.lastObject : scrollView.subviews.firstObject;
+}
+
 #pragma mark - setter
 //- (void)setCurrentIndex:(NSUInteger)currentIndex {
 //    _currentIndex = currentIndex;
@@ -260,6 +270,10 @@
         [self.view addSubview:_browserToolsView];
     }
     return _browserToolsView;
+}
+
+- (void)dealloc {
+    NSLog(@"-----------------------Browser Dealloc-----------------------");
 }
 
 @end

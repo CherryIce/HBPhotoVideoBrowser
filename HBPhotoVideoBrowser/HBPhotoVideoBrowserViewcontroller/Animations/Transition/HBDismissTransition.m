@@ -27,7 +27,13 @@
         UIImageView * imageView = (UIImageView *)[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView];
         self.dimssImageView.image = imageView.image;
     }else{
-        self.dimssImageView.image = [HBHelper snapshotView:[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView]];
+        if ([[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissFromView] isKindOfClass:[UIImageView class]]) {
+            UIImageView * imageView = (UIImageView *)[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissFromView];
+            self.dimssImageView.image = imageView.image;
+        }else{
+            self.dimssImageView.image = [HBHelper snapshotView:[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissFromView]];
+        }
+        //self.dimssImageView.image = [HBHelper snapshotView:[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView]];
     }
     self.dimssImageView.contentMode = [(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].contentMode;
     self.dimssImageView.clipsToBounds = [(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].clipsToBounds;
@@ -62,7 +68,9 @@
             CGRect rect = [containerView convertRect:[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].frame fromView:[(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].superview];
             self.dimssImageView.frame = rect;
         } completion:^(BOOL finished) {
+            //恢复动画过后原视图上面的图片显示
             [(id <HBPhotoVideoBrowserViewControllerDelegate>)fromVc dismissView].hidden = NO;
+            //清除动画层视图
             self.dimssImageView.hidden = NO;
             [self.dimssImageView removeFromSuperview];
             [transitionContext completeTransition:YES];

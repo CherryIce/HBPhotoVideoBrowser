@@ -42,6 +42,8 @@
 		46E8F329255E7D2C00BC021F /* pause@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F31F255E7D2C00BC021F /* pause@3x.png */; };
 		46E8F32A255E7D2C00BC021F /* point@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F320255E7D2C00BC021F /* point@2x.png */; };
 		46E8F32B255E7D2C00BC021F /* point@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 46E8F321255E7D2C00BC021F /* point@3x.png */; };
+		5504A46229CB6FC300BAF6D7 /* HBLargeImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5504A46129CB6FC300BAF6D7 /* HBLargeImageView.m */; };
+		5504A46429CB790400BAF6D7 /* 0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5504A46329CB790400BAF6D7 /* 0.jpg */; };
 		5515E3BA252C8D6500F173CD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5515E3B9252C8D6500F173CD /* AppDelegate.m */; };
 		5515E3C0252C8D6500F173CD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5515E3BF252C8D6500F173CD /* ViewController.m */; };
 		5515E3C3252C8D6500F173CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5515E3C1252C8D6500F173CD /* Main.storyboard */; };
@@ -133,6 +135,9 @@
 		46E8F31F255E7D2C00BC021F /* pause@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pause@3x.png"; sourceTree = "<group>"; };
 		46E8F320255E7D2C00BC021F /* point@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point@2x.png"; sourceTree = "<group>"; };
 		46E8F321255E7D2C00BC021F /* point@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point@3x.png"; sourceTree = "<group>"; };
+		5504A46029CB6FC300BAF6D7 /* HBLargeImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HBLargeImageView.h; sourceTree = "<group>"; };
+		5504A46129CB6FC300BAF6D7 /* HBLargeImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HBLargeImageView.m; sourceTree = "<group>"; };
+		5504A46329CB790400BAF6D7 /* 0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 0.jpg; sourceTree = "<group>"; };
 		5515E3B5252C8D6500F173CD /* HBPhotoVideoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HBPhotoVideoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5515E3B8252C8D6500F173CD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		5515E3B9252C8D6500F173CD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -337,6 +342,8 @@
 				46724B862536F42B00A7C6EC /* HBImageView.m */,
 				46724B8B2536F61B00A7C6EC /* HBScrollView.h */,
 				46724B8C2536F61B00A7C6EC /* HBScrollView.m */,
+				5504A46029CB6FC300BAF6D7 /* HBLargeImageView.h */,
+				5504A46129CB6FC300BAF6D7 /* HBLargeImageView.m */,
 			);
 			path = ImageCell;
 			sourceTree = "<group>";
@@ -424,6 +431,7 @@
 				46724B2225345EFE00A7C6EC /* Example */,
 				5515E3C1252C8D6500F173CD /* Main.storyboard */,
 				5515E3C4252C8D6600F173CD /* Assets.xcassets */,
+				5504A46329CB790400BAF6D7 /* 0.jpg */,
 				5515E3C6252C8D6600F173CD /* LaunchScreen.storyboard */,
 				5515E3C9252C8D6600F173CD /* Info.plist */,
 				5515E3CA252C8D6600F173CD /* main.m */,
@@ -554,6 +562,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5504A46429CB790400BAF6D7 /* 0.jpg in Resources */,
 				46E8F327255E7D2C00BC021F /* meidaPlay@3x.png in Resources */,
 				46AB0E67256B5BD6009AC684 /* menu@2x.png in Resources */,
 				46AB0E69256B5BD6009AC684 /* menu@3x.png in Resources */,
@@ -642,6 +651,7 @@
 				46278B982567B7860045994C /* HBToolsView.m in Sources */,
 				46BCDC2C259DAAD600C203BB /* UICollectionViewCell+HBAnimation.m in Sources */,
 				46724B2525345F3E00A7C6EC /* HBExampleCell.m in Sources */,
+				5504A46229CB6FC300BAF6D7 /* HBLargeImageView.m in Sources */,
 				46724B8D2536F61B00A7C6EC /* HBScrollView.m in Sources */,
 				46808B772530466D005EF5AA /* HBVideoCollectionViewCell.m in Sources */,
 				46808B5C25304199005EF5AA /* HBPhotoVideoBrowserViewController.m in Sources */,
@@ -766,7 +776,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -819,7 +828,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -836,6 +844,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LGN7SU938D;
 				INFOPLIST_FILE = HBPhotoVideoBrowser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -855,6 +864,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = LGN7SU938D;
 				INFOPLIST_FILE = HBPhotoVideoBrowser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

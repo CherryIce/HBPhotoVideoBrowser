@@ -18,20 +18,31 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor brownColor];
-        [self addSubview:self.imageView];
+        [self.contentView addSubview:self.imageView];
+        [self.contentView addSubview:self.largeImageView];
     }
     return self;
 }
 
 - (void) refreshCell:(HBDataItem *) data {
+    [self.imageView setHidden:data.isLargeImage];
+    [self.largeImageView setHidden:!data.isLargeImage];
     if (data.dataType == HBDataTypeIMAGE) {
         if (data.image) {
-            self.imageView.image = data.image;
+            if (data.isLargeImage) {
+                [self.largeImageView hb_setImage:data.image tiledCount:16];
+            }else{
+                [self.imageView setImage:data.image];
+            }
         }else{
             NSURL * url = data.thumbnailURL ? data.thumbnailURL : data.dataURL;
-            [self.imageView sd_setImageWithURL:url placeholderImage:nil options:0 completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-                
-            }];
+            if (data.isLargeImage) {
+                [self.largeImageView hb_setImageWithUrl:url];
+            }else{
+                [self.imageView sd_setImageWithURL:url placeholderImage:nil options:0 completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+
+                }];
+            }
         }
     }else{
         self.imageView.image = [self getVideoPreViewImage:data.dataURL];
@@ -61,6 +72,14 @@
         _imageView.contentMode = UIViewContentModeScaleAspectFit;
     }
     return _imageView;
+}
+
+//要实现UIImageView那种图片适配模式 需要提前计算图片的宽高比来创建largeImageView
+- (HBLargeImageView *)largeImageView {
+    if(!_largeImageView) {
+        _largeImageView = [[HBLargeImageView alloc] initWithFrame:self.bounds];
+    }
+    return _largeImageView;
 }
 
 @end

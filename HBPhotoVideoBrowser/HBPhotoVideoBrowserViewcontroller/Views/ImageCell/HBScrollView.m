@@ -22,6 +22,7 @@
             self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         }
         [self addSubview:self.imageView];
+        [self addSubview:self.largeImageView];
     }
     return self;
 }
@@ -34,6 +35,14 @@
         _imageView.clipsToBounds = YES;
     }
     return _imageView;
+}
+
+- (HBLargeImageView *)largeImageView {
+    if(!_largeImageView) {
+        _largeImageView = [[HBLargeImageView alloc] init]; 
+        _largeImageView.backgroundColor = [UIColor redColor];
+    }
+    return _largeImageView;
 }
 
 @end

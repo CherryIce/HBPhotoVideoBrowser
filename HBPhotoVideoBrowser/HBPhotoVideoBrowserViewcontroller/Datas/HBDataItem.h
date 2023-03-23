@@ -72,6 +72,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic,assign) BOOL isJustCurrentIndexNeedAutoPlay;
 
+/**
+ 是否是大图
+ */
+@property (nonatomic,assign) BOOL isLargeImage;
+
 /** ------------- 快速创建方法 ------------- **/
 - (instancetype) initWithImage:(UIImage *) image;
 
